@@ -43,3 +43,20 @@ def delete_book(book_id: uuid.UUID, db: Session = Depends(get_db)):
     db.delete(book)
     db.commit()
     return None
+
+@app.put("/books/{book_id}", response_model=BookResponse)
+def put_book(book_id: uuid.UUID, book: BookCreate, db: Session = Depends(get_db)):
+    old_book = db.get(Book, book_id)
+    if old_book is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Book not found")
+
+    old_book.title = book.title
+    old_book.author = book.author
+    old_book.description = book.description
+    old_book.published_year = book.published_year
+    old_book.genre = book.genre
+    old_book.is_available = book.is_available
+
+    db.commit()
+    db.refresh(old_book)
+    return old_book
