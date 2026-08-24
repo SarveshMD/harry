@@ -34,3 +34,12 @@ def post_book(book: BookCreate, db: Session = Depends(get_db)):
     db.commit()
     db.refresh(new_book)
     return new_book
+
+@app.delete("/books/{book_id}", status_code=status.HTTP_204_NO_CONTENT)
+def delete_book(book_id: uuid.UUID, db: Session = Depends(get_db)):
+    book = db.get(Book, book_id)
+    if book is None:
+        raise HTTPException(status_code=404, detail="Book not found")
+    db.delete(book)
+    db.commit()
+    return None
