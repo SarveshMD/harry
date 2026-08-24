@@ -13,12 +13,17 @@ class BookBase(BaseModel):
     genre: GenreEnum
     is_available: bool = True
 
+
 class BookCreate(BookBase):
-    pass
+    model_config = ConfigDict(extra='forbid')
+
 
 class BookResponse(BookBase):
+    model_config = ConfigDict(from_attributes=True)
+
     id: uuid.UUID
     created_at: datetime
+
 
 class BookPatch(BaseModel):
     model_config = ConfigDict(extra='forbid')
