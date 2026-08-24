@@ -23,7 +23,7 @@ class Book(Base):
     published_year: Mapped[int] = mapped_column(Integer)
     genre: Mapped[GenreEnum] = mapped_column(Enum(GenreEnum), name='genre_enum')
     is_available: Mapped[bool] = mapped_column(Boolean, default=True)
-    created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.now(timezone.utc))
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=lambda: datetime.now(timezone.utc))
 
     def __repr__(self) -> str:
         return f"Book(id={self.id!r}, title={self.title!r}, \
