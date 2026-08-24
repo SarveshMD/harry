@@ -5,7 +5,7 @@ import uuid
 
 from database import get_db, Base, engine
 from models import Book
-from schema import BookCreate, BookResponse
+from schema import BookCreate, BookResponse, BookPatch
 
 Base.metadata.create_all(bind=engine)
 
@@ -56,6 +56,27 @@ def put_book(book_id: uuid.UUID, book: BookCreate, db: Session = Depends(get_db)
     old_book.published_year = book.published_year
     old_book.genre = book.genre
     old_book.is_available = book.is_available
+
+    db.commit()
+    db.refresh(old_book)
+    return old_book
+
+@app.patch("/books/{book_id}", response_model=BookResponse)
+def patch_book(book_id: uuid.UUID, book: BookPatch, db: Session = Depends(get_db)):
+    old_book = db.get(Book, book_id)
+    if old_book is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Book not found")
+
+    updates = book.model_dump(exclude_unset=True)
+
+    if not updates:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="At least one field must be provided for update"
+        )
+
+    for field, value in updates.items():
+        setattr(old_book, field, value)
 
     db.commit()
     db.refresh(old_book)

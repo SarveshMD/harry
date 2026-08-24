@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 import uuid
 from datetime import datetime
 
@@ -19,3 +19,13 @@ class BookCreate(BookBase):
 class BookResponse(BookBase):
     id: uuid.UUID
     created_at: datetime
+
+class BookPatch(BaseModel):
+    model_config = ConfigDict(extra='forbid')
+
+    title: str | None = None
+    author: str | None = None
+    description: str | None = None
+    published_year: int | None = None
+    genre: GenreEnum | None = None
+    is_available: bool | None = None
