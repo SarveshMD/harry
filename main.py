@@ -27,7 +27,7 @@ def get_book(book_id: uuid.UUID, db: Session = Depends(get_db)):
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Book not found")
     return book
 
-@app.post("/books", response_model=BookResponse)
+@app.post("/books", response_model=BookResponse, status_code=status.HTTP_201_CREATED)
 def post_book(book: BookCreate, db: Session = Depends(get_db)):
     new_book = Book(**book.model_dump())
     db.add(new_book)
