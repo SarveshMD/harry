@@ -7,8 +7,6 @@ from database import get_db, Base, engine
 from models import Book
 from schema import BookCreate, BookResponse, BookPatch
 
-Base.metadata.create_all(bind=engine)
-
 app = FastAPI()
 
 @app.get("/")
