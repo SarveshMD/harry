@@ -6,3 +6,4 @@ pydantic-settings
 psycopg
 psycopg[binary]
 pytest
+gunicorn
