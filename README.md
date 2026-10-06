@@ -45,11 +45,11 @@ pytest tests
 
 ## Tech Stack
 
-    - FastAPI
-    - PostgreSQL
-    - SQLAlchemy
-    - Pydantic
-    - Pytest
+- FastAPI
+- PostgreSQL
+- SQLAlchemy
+- Pydantic
+- Pytest
 
 ## CRUD: Book Resource
 
